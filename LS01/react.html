@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="../imgs/snowflake.png" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="#000000" />
+    <title>React App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      let obj = {
+        type: 'h1',
+        props: {// propers
+          id: 'title',
+          className: 'tit',// class
+          children: [
+            'hello world',
+            ' ',
+            'hello react',
+            {
+              type: 'p',
+              props: {
+                id: 'box',
+                children: [
+                    'Happy Spring Festival Day'
+                ]
+              }
+            }
+          ]
+        }
+      }
+      function render(obj, container) {
+        let {type, props} = obj;
+        var ele = document.createElement(type);
+        Object.keys(props).forEach((key) => {
+          // console.log(key);
+          if(key ==='className') {
+            ele.className = props[key];// 等价 ele.setAttribute('class',props[item]);
+          } else if(key === 'children') {
+            props[key].forEach(item => {
+              console.log(item);
+              if(typeof item === 'object') {
+                render(item, ele);
+              } else {
+                let txtNode = document.createTextNode(item);
+                ele.appendChild(txtNode);
+              }
+            });
+          } else {
+            ele[key] = props[key];
+          }
+        });
+        container.appendChild(ele);
+      }
+      render(obj, document.getElementById('root'));
+    </script>
+  </body>
+</html>
